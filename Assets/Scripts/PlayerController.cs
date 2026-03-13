@@ -16,10 +16,11 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private float turningSpeed = 2f;
 	[SerializeField] private float gravity = 9.81f;
 	[SerializeField] private float jumpHeight = 2f;
-
+	[SerializeField] private float jumpCooldown = 1f;
 
 	private float verticalVelocity;
 	private float speed;
+	private float jumpTimer;
 
 	[Header("Animations")]
 	private int animMoveSpeed;
@@ -42,6 +43,7 @@ public class PlayerController : MonoBehaviour
 	{
 		InputManagement();
 		Movement();
+		jumpTimer -= Time.deltaTime;
 
 	}
 
@@ -101,29 +103,36 @@ private void Turn()
     }
 }
 
-	private float VerticalForceCalculation()
-	{
-		if (controller.isGrounded)
-		{
-			verticalVelocity = -1;
+    private float VerticalForceCalculation()
+    {
+        bool grounded = controller.isGrounded;
 
-			animator.SetBool(animGrounded, true);
+        if (grounded)
+        {
+            verticalVelocity = -1;
 
-			if (Input.GetButtonDown("Jump"))
-			{
-				verticalVelocity = Mathf.Sqrt(jumpHeight * gravity * 2);
+            if (!animator.GetBool(animGrounded))
+            {
+                jumpTimer = jumpCooldown;
+            }
 
-				animator.SetTrigger(animJump);
-			}
-		}
-		else
-		{
-			verticalVelocity -= gravity * Time.deltaTime;
+            animator.SetBool(animGrounded, true);
 
-			animator.SetBool(animGrounded, false);
-		}
-		return verticalVelocity;
-	}
+            if (Input.GetButtonDown("Jump") && jumpTimer <= 0f)
+            {
+                verticalVelocity = Mathf.Sqrt(jumpHeight * gravity * 2);
+                animator.SetTrigger(animJump);
+            }
+        }
+        else
+        {
+            verticalVelocity -= gravity * Time.deltaTime;
+
+            animator.SetBool(animGrounded, false);
+        }
+
+        return verticalVelocity;
+    }
 
 	private void SetupAnimator()
 	{

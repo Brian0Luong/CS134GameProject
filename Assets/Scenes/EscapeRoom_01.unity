@@ -2126,7 +2126,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 547958666}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.13602185, y: 0, z: 0, w: 0.99070585}
+  m_LocalRotation: {x: 0.13602185, y: 0.00000002952534, z: -0.0000000040537675, w: 0.9907059}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2394,7 +2394,7 @@ MonoBehaviour:
   m_XAxis:
     Value: 0
     m_SpeedMode: 0
-    m_MaxSpeed: 175
+    m_MaxSpeed: 300
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
@@ -2592,14 +2592,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaa5ddcfa27182843b881874d1ec6e3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 1018052840}
+  camera: {fileID: 330585546}
   animator: {fileID: 1139491878}
   walkSpeed: 5
   sprintSpeed: 10
   sprintTransitSpeed: 5
-  turningSpeed: 2
+  turningSpeed: 5
   gravity: 9.81
   jumpHeight: 2
+  jumpCooldown: 0.5
 --- !u!143 &1139491876
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2747,7 +2748,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1398548219}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.15397233, y: 0, z: 0, w: 0.9880752}
+  m_LocalRotation: {x: 0.15397233, y: -0.0000000034757397, z: 5.416265e-10, w: 0.9880752}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
