@@ -104,35 +104,34 @@ private void Turn()
 }
 
     private float VerticalForceCalculation()
+{
+    bool grounded = controller.isGrounded;
+    bool previouslyGrounded = animator.GetBool(animGrounded);
+
+    animator.SetBool(animGrounded, grounded);
+
+    if (grounded)
     {
-        bool grounded = controller.isGrounded;
-
-        if (grounded)
+        if (!previouslyGrounded)
         {
-            verticalVelocity = -1;
-
-            if (!animator.GetBool(animGrounded))
-            {
-                jumpTimer = jumpCooldown;
-            }
-
-            animator.SetBool(animGrounded, true);
-
-            if (Input.GetButtonDown("Jump") && jumpTimer <= 0f)
-            {
-                verticalVelocity = Mathf.Sqrt(jumpHeight * gravity * 2);
-                animator.SetTrigger(animJump);
-            }
-        }
-        else
-        {
-            verticalVelocity -= gravity * Time.deltaTime;
-
-            animator.SetBool(animGrounded, false);
+            jumpTimer = jumpCooldown;
         }
 
-        return verticalVelocity;
+        verticalVelocity = -2f;
+
+        if (Input.GetButtonDown("Jump") && jumpTimer <= 0f)
+        {
+            verticalVelocity = Mathf.Sqrt(jumpHeight * gravity * 2);
+            animator.SetTrigger(animJump);
+        }
     }
+    else
+    {
+        verticalVelocity -= gravity * Time.deltaTime;
+    }
+
+    return verticalVelocity;
+}
 
 	private void SetupAnimator()
 	{
