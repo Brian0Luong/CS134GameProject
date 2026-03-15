@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
 
 public class PlayerWaterState : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class PlayerWaterState : MonoBehaviour
 
     private float currentOxygen;
     private bool hasLost = false;
+    public Volume underwaterVolume;
 
     void Start()
     {
@@ -43,6 +45,9 @@ public class PlayerWaterState : MonoBehaviour
 
         if (underwater)
         {
+            if (underwaterVolume != null)
+                underwaterVolume.weight = 1f;
+
             currentOxygen -= oxygenDrainPerSecond * Time.deltaTime;
             currentOxygen = Mathf.Max(currentOxygen, 0f);
 
@@ -54,6 +59,9 @@ public class PlayerWaterState : MonoBehaviour
         }
         else
         {
+            if (underwaterVolume != null)
+                underwaterVolume.weight = 0f;
+
             currentOxygen += oxygenRecoverPerSecond * Time.deltaTime;
             currentOxygen = Mathf.Min(currentOxygen, maxOxygen);
         }
