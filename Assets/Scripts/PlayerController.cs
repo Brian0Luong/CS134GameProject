@@ -187,6 +187,7 @@ public class PlayerController : MonoBehaviour
 
             Rigidbody rb = hit.collider.attachedRigidbody;
             if (rb == null) return;
+            if (rb.velocity.y < -0.1f) return;
 
             Collider col = hit.collider;
             Bounds bounds = col.bounds;
@@ -229,6 +230,12 @@ public class PlayerController : MonoBehaviour
     private void PushMovement()
     {
         if (currentPushable == null)
+        {
+            ExitPushMode();
+            return;
+        }
+
+        if (currentPushable.velocity.y < -0.1f)
         {
             ExitPushMode();
             return;
