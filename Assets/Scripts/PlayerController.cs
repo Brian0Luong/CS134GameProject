@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour
     private float turnInput;
 
     private bool isPushing = false;
+    private bool movementLocked;
     private Rigidbody currentPushable;
     private Vector3 pushNormal;
 
@@ -73,8 +74,19 @@ public class PlayerController : MonoBehaviour
 
     private void Movement()
     {
+        if (movementLocked) return;
         GroundMovement();
         Turn();
+    }
+
+    public void LockMovement()
+    {
+        movementLocked = true;
+    }
+
+    public void UnlockMovement()
+    {
+        movementLocked = false;
     }
 
     private void GroundMovement()
