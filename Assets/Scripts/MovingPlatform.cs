@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MovingPlatform : MonoBehaviour
+public class MovingPlatform : MonoBehaviour, IButtonActivated
 {
     [Header("Points")]
     [SerializeField] private Transform pointA;
@@ -9,35 +9,31 @@ public class MovingPlatform : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private float pauseTime = 1f;
-    [SerializeField] private float arriveDistance = 0.05f;
+    [SerializeField] private bool startActive = false;
 
     private Transform currentTarget;
     private float pauseTimer;
     private bool isPaused;
+    private bool isActive;
 
     private void Start()
     {
-        if (pointA == null || pointB == null)
-        {
-            Debug.LogError("MovingPlatform: Assign PointA and PointB.");
-            enabled = false;
-            return;
-        }
-
         transform.position = pointA.position;
         currentTarget = pointB;
+        isActive = startActive;
     }
 
     private void Update()
     {
+        if (!isActive)
+            return;
+
         if (isPaused)
         {
             pauseTimer -= Time.deltaTime;
             if (pauseTimer <= 0f)
-            {
                 isPaused = false;
-                currentTarget = currentTarget == pointA ? pointB : pointA;
-            }
+
             return;
         }
 
@@ -47,11 +43,16 @@ public class MovingPlatform : MonoBehaviour
             moveSpeed * Time.deltaTime
         );
 
-        if (Vector3.Distance(transform.position, currentTarget.position) <= arriveDistance)
+        if (Vector3.Distance(transform.position, currentTarget.position) < 0.001f)
         {
-            transform.position = currentTarget.position;
+            currentTarget = currentTarget == pointA ? pointB : pointA;
             isPaused = true;
             pauseTimer = pauseTime;
         }
+    }
+
+    public void Activate()
+    {
+        isActive = true;
     }
 }

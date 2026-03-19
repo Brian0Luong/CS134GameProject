@@ -5,6 +5,7 @@ public class InteractableButton : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform buttonVisual;
+    [SerializeField] private MonoBehaviour[] activationTargets;
 
     [Header("Press Settings")]
     [SerializeField] private float pressDistance = 0.02f;
@@ -62,13 +63,18 @@ public class InteractableButton : MonoBehaviour
 
         pressRoutine = StartCoroutine(PressButtonRoutine());
 
-        Debug.Log($"{gameObject.name} was pressed!");
+        ActivateTargets();
+    }
 
-        // Put your button logic here
-        // Example:
-        // door.Open();
-        // platform.Activate();
-        // lightObject.SetActive(true);
+    private void ActivateTargets()
+    {
+        foreach (MonoBehaviour target in activationTargets)
+        {
+            if (target is IButtonActivated activatable)
+            {
+                activatable.Activate();
+            }
+        }
     }
 
     private IEnumerator PressButtonRoutine()
