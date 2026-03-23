@@ -13,6 +13,11 @@ public class WaterVentVFX : MonoBehaviour
     [Header("Bubble Settings")]
     [SerializeField] private float bubbleSpeed = 1.5f;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource waterHitSource;
+    [SerializeField] private AudioClip waterHitClip;
+    [SerializeField] private float lifetimeMultiplier = 0.9f;
+
     private bool isUnderwater = false;
 
     private void Start()
@@ -43,7 +48,7 @@ public class WaterVentVFX : MonoBehaviour
 
             if (distanceToSurface > 0f)
             {
-                float lifetime = distanceToSurface / bubbleSpeed;
+                float lifetime = (distanceToSurface / bubbleSpeed) * lifetimeMultiplier;
 
                 var main = bubbles.main;
                 main.startLifetime = lifetime;
@@ -66,6 +71,16 @@ public class WaterVentVFX : MonoBehaviour
 
         if (bubbles != null)
             bubbles.Stop();
+
+        if (waterHitSource != null && waterHitClip != null)
+        {
+            if (!waterHitSource.isPlaying)
+            {
+                waterHitSource.clip = waterHitClip;
+                waterHitSource.loop = true;
+                waterHitSource.Play();
+            }
+        }
     }
 
     private void SetUnderwaterMode()
@@ -83,5 +98,10 @@ public class WaterVentVFX : MonoBehaviour
 
         if (bubbles != null)
             bubbles.Play();
+
+        if (waterHitSource != null && waterHitSource.isPlaying)
+        {
+            waterHitSource.Stop();
+        }
     }
 }
