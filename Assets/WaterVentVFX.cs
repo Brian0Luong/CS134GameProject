@@ -11,7 +11,7 @@ public class WaterVentVFX : MonoBehaviour
     [SerializeField] private float heightOffset = 0f;
 
     [Header("Bubble Settings")]
-    [SerializeField] private float bubbleSpeed = 1.5f; // MUST match particle Start Speed
+    [SerializeField] private float bubbleSpeed = 1.5f;
 
     private bool isUnderwater = false;
 
@@ -28,7 +28,6 @@ public class WaterVentVFX : MonoBehaviour
         float waterY = water.CurrentWaterY;
         float ventY = transform.position.y;
 
-        // 🔄 Switch between flow and bubbles
         if (!isUnderwater && waterY + heightOffset > ventY)
         {
             SetUnderwaterMode();
@@ -38,7 +37,6 @@ public class WaterVentVFX : MonoBehaviour
             SetFlowMode();
         }
 
-        // 🫧 OPTION 2: Dynamically adjust bubble lifetime
         if (isUnderwater && bubbles != null)
         {
             float distanceToSurface = waterY - ventY;
