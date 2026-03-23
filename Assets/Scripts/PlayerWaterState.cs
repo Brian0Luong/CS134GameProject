@@ -14,7 +14,7 @@ public class PlayerWaterState : MonoBehaviour
 
     [Header("Audio References")]
     public AudioSource underwaterLoopSource;
-    public AudioLowPassFilter footstepLowPassFilter;
+    public AudioLowPassFilter globalLowPassFilter;
     public AudioSource splashSource;
     public AudioClip splashClip;
 
@@ -60,8 +60,8 @@ public class PlayerWaterState : MonoBehaviour
         if (underwaterLoopSource != null && underwaterLoopSource.isPlaying)
             underwaterLoopSource.Stop();
 
-        if (footstepLowPassFilter != null)
-            footstepLowPassFilter.cutoffFrequency = normalCutoff;
+        if (globalLowPassFilter != null)
+            globalLowPassFilter.cutoffFrequency = normalCutoff;
     }
 
     void Update()
@@ -143,16 +143,16 @@ public class PlayerWaterState : MonoBehaviour
             if (underwaterLoopSource != null && !underwaterLoopSource.isPlaying)
                 underwaterLoopSource.Play();
 
-            if (footstepLowPassFilter != null)
-                footstepLowPassFilter.cutoffFrequency = underwaterCutoff;
+            if (globalLowPassFilter != null)
+                globalLowPassFilter.cutoffFrequency = underwaterCutoff;
         }
         else
         {
             if (underwaterLoopSource != null && underwaterLoopSource.isPlaying)
                 underwaterLoopSource.Stop();
 
-            if (footstepLowPassFilter != null)
-                footstepLowPassFilter.cutoffFrequency = normalCutoff;
+            if (globalLowPassFilter != null)
+                globalLowPassFilter.cutoffFrequency = normalCutoff;
         }
     }
 
