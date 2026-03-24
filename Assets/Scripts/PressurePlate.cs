@@ -2,21 +2,59 @@ using UnityEngine;
 
 public class PressurePlate : MonoBehaviour
 {
-    public DoorOpen door;
+    [Header("Targets")]
+    [SerializeField] private MonoBehaviour[] activationTargets;
+
+    [Header("Settings")]
+    [SerializeField] private bool requirePushable = true;
+
+    private int objectsOnPlate = 0;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Pushable"))
+        if (requirePushable && !other.CompareTag("Pushable"))
+            return;
+
+        objectsOnPlate++;
+
+        if (objectsOnPlate == 1)
         {
-            door.SetOpen(true);
+            ActivateTargets();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Pushable"))
+        if (requirePushable && !other.CompareTag("Pushable"))
+            return;
+
+        objectsOnPlate--;
+
+        if (objectsOnPlate <= 0)
         {
-            door.SetOpen(false);
+            DeactivateTargets();
+        }
+    }
+
+    void ActivateTargets()
+    {
+        foreach (MonoBehaviour target in activationTargets)
+        {
+            if (target is IButtonActivated activatable)
+            {
+                activatable.Activate();
+            }
+        }
+    }
+
+    void DeactivateTargets()
+    {
+        foreach (MonoBehaviour target in activationTargets)
+        {
+            if (target is IButtonActivated activatable)
+            {
+                activatable.Activate(); // toggle behavior
+            }
         }
     }
 }
