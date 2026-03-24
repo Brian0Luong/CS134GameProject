@@ -3,7 +3,7 @@ using UnityEngine;
 public class ToggleObjectOnActivate : MonoBehaviour, IButtonActivated
 {
     [SerializeField] private GameObject targetObject;
-    [SerializeField] private bool setActiveState = true;
+    [SerializeField] private bool setActiveOnActivate = true;
     [SerializeField] private bool destroyObject = false;
 
     public void Activate()
@@ -17,7 +17,15 @@ public class ToggleObjectOnActivate : MonoBehaviour, IButtonActivated
         }
         else
         {
-            targetObject.SetActive(setActiveState);
+            targetObject.SetActive(setActiveOnActivate);
         }
+    }
+
+    public void SetState(bool state)
+    {
+        if (targetObject == null)
+            return;
+
+        targetObject.SetActive(state);
     }
 }

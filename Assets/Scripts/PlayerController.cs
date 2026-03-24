@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         SetupAnimator();
+        ResetMovementState();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -265,9 +266,6 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        Vector3 totalMove = Vector3.zero;
-        totalMove.y = VerticalForceCalculation() * Time.deltaTime;
-
         AlignToPushable();
 
         Vector3 camForward = camera.forward;
@@ -295,7 +293,8 @@ public class PlayerController : MonoBehaviour
             animator.SetFloat(animPushSpeed, 0f);
         }
 
-        controller.Move(Vector3.up * (VerticalForceCalculation() * Time.deltaTime));
+        float verticalMove = VerticalForceCalculation();
+        controller.Move(Vector3.up * (verticalMove * Time.deltaTime));
 
         animator.SetBool(animIsPushing, true);
         animator.SetFloat(animMoveSpeed, 0f);
@@ -411,5 +410,22 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireSphere(origin, pushCheckRadius);
         Gizmos.DrawLine(origin, origin + moveDirection * pushCheckDistance);
         Gizmos.DrawWireSphere(origin + moveDirection * pushCheckDistance, pushCheckRadius);
+    }
+
+    public void ResetMovementState()
+    {
+        verticalVelocity = -2f;
+        speed = 0f;
+        jumpTimer = 0f;
+
+        movementLocked = false;
+        isPushing = false;
+        currentPushable = null;
+        pushNormal = Vector3.zero;
+
+        animator.SetBool(animGrounded, false);
+        animator.SetBool(animIsPushing, false);
+        animator.SetFloat(animPushSpeed, 0f);
+        animator.SetFloat(animMoveSpeed, 0f);
     }
 }

@@ -32,28 +32,41 @@ public class PressurePlate : MonoBehaviour
 
         if (objectsOnPlate <= 0)
         {
+            objectsOnPlate = 0;
             DeactivateTargets();
         }
     }
 
-    void ActivateTargets()
+    private void ActivateTargets()
     {
         foreach (MonoBehaviour target in activationTargets)
         {
-            if (target is IButtonActivated activatable)
+            if (target is ToggleObjectOnActivate toggleTarget)
+            {
+                toggleTarget.SetState(true);
+            }
+            else if (target is DoorOpen door)
+            {
+                door.SetOpen(true);
+            }
+            else if (target is IButtonActivated activatable)
             {
                 activatable.Activate();
             }
         }
     }
 
-    void DeactivateTargets()
+    private void DeactivateTargets()
     {
         foreach (MonoBehaviour target in activationTargets)
         {
-            if (target is IButtonActivated activatable)
+            if (target is ToggleObjectOnActivate toggleTarget)
             {
-                activatable.Activate(); // toggle behavior
+                toggleTarget.SetState(false);
+            }
+            else if (target is DoorOpen door)
+            {
+                door.SetOpen(false);
             }
         }
     }
