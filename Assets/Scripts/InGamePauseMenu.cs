@@ -4,20 +4,30 @@ using UnityEngine.UI;
 public class InGamePauseMenu : MonoBehaviour
 {
     public GameObject settingsPanel;
-    public Slider volumeSlider;
+
+    [Header("Sliders")]
+    public Slider musicVolumeSlider;
+    public Slider masterVolumeSlider;
+
+    [Header("Audio")]
     public AudioSource bgmSource;
 
     private bool isOpen = false;
 
     private void Start()
     {
-        float savedVolume = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
-        volumeSlider.value = savedVolume;
+        float savedMusicVolume = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
+        float savedMasterVolume = PlayerPrefs.GetFloat("MasterVolume", 1f);
+
+        musicVolumeSlider.value = savedMusicVolume;
+        masterVolumeSlider.value = savedMasterVolume;
 
         if (bgmSource != null)
         {
-            bgmSource.volume = savedVolume;
+            bgmSource.volume = savedMusicVolume;
         }
+
+        AudioListener.volume = savedMasterVolume;
 
         settingsPanel.SetActive(false);
 
@@ -31,13 +41,9 @@ public class InGamePauseMenu : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isOpen)
-            {
                 CloseSettings();
-            }
             else
-            {
                 OpenSettings();
-            }
         }
     }
 
@@ -61,9 +67,9 @@ public class InGamePauseMenu : MonoBehaviour
         Cursor.visible = false;
     }
 
-    public void OnVolumeChanged()
+    public void OnMusicVolumeChanged()
     {
-        float volume = volumeSlider.value;
+        float volume = musicVolumeSlider.value;
 
         PlayerPrefs.SetFloat("MusicVolume", volume);
         PlayerPrefs.Save();
@@ -72,5 +78,15 @@ public class InGamePauseMenu : MonoBehaviour
         {
             bgmSource.volume = volume;
         }
+    }
+
+    public void OnMasterVolumeChanged()
+    {
+        float volume = masterVolumeSlider.value;
+
+        PlayerPrefs.SetFloat("MasterVolume", volume);
+        PlayerPrefs.Save();
+
+        AudioListener.volume = volume;
     }
 }
