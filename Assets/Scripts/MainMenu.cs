@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     public GameObject settingsPanel;
+    public GameObject mainButtonsPanel;
 
     public void StartGame()
     {
@@ -13,17 +14,19 @@ public class MainMenu : MonoBehaviour
     public void OpenSettings()
     {
         if (settingsPanel != null)
-        {
             settingsPanel.SetActive(true);
-        }
+
+        if (mainButtonsPanel != null)
+            mainButtonsPanel.SetActive(false);
     }
 
     public void CloseSettings()
     {
         if (settingsPanel != null)
-        {
             settingsPanel.SetActive(false);
-        }
+
+        if (mainButtonsPanel != null)
+            mainButtonsPanel.SetActive(true);
     }
 
     public void QuitGame()
