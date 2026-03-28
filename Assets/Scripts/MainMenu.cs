@@ -5,6 +5,8 @@ public class MainMenu : MonoBehaviour
 {
     public GameObject settingsPanel;
     public GameObject mainButtonsPanel;
+    public GameObject tutorialPanel;
+
 
     public void StartGame()
     {
@@ -28,6 +30,25 @@ public class MainMenu : MonoBehaviour
         if (mainButtonsPanel != null)
             mainButtonsPanel.SetActive(true);
     }
+
+    public void OpenTutorial()
+    {
+        if (tutorialPanel != null)
+            tutorialPanel.SetActive(true);
+
+        if (mainButtonsPanel != null)
+            mainButtonsPanel.SetActive(false);
+    }
+
+    public void CloseTutorial()
+    {
+        if (tutorialPanel != null)
+            tutorialPanel.SetActive(false);
+
+        if (mainButtonsPanel != null)
+            mainButtonsPanel.SetActive(true);
+    }
+
 
     public void QuitGame()
     {
