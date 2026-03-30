@@ -7,11 +7,7 @@ public class PushableObject : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-
-        // Default: allow movement but prevent tipping
-        rb.constraints =
-            RigidbodyConstraints.FreezeRotationX |
-            RigidbodyConstraints.FreezeRotationZ;
+        LockMovement();
     }
 
     public void LockMovement()
@@ -25,7 +21,6 @@ public class PushableObject : MonoBehaviour
     public void UnlockMovement()
     {
         rb.constraints =
-            RigidbodyConstraints.FreezeRotationX |
-            RigidbodyConstraints.FreezeRotationZ;
+            RigidbodyConstraints.FreezeRotation;
     }
 }

@@ -1,41 +1,90 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
 public class CubeSlideSound : MonoBehaviour
 {
-    public float moveThreshold = 0.001f;
+    [Header("Audio Sources")]
+    public AudioSource slideSource;
+    public AudioSource impactSource;
 
-    private AudioSource audioSource;
-    private Vector3 lastPosition;
+    [Header("Sliding Sound")]
+    public float moveThreshold = 0.05f;
+    public float fallThreshold = -0.1f;
+
+    [Header("Landing Sound")]
+    public AudioClip landClip;
+    public float minImpactSpeed = 1f;
+    public float landVolumeMultiplier = 0.2f;
+
+    private Rigidbody rb;
+    private bool forceSlidingSound = false;
 
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-        audioSource.loop = true;
-        audioSource.playOnAwake = false;
+        rb = GetComponent<Rigidbody>();
 
-        lastPosition = transform.position;
+        if (slideSource != null)
+        {
+            slideSource.loop = true;
+            slideSource.playOnAwake = false;
+        }
+
+        if (impactSource != null)
+        {
+            impactSource.loop = false;
+            impactSource.playOnAwake = false;
+        }
     }
 
     void Update()
     {
-        float distanceMoved = Vector3.Distance(transform.position, lastPosition);
+        if (rb == null || slideSource == null)
+            return;
 
-        if (distanceMoved > moveThreshold)
+        Vector3 velocity = rb.velocity;
+        bool isFalling = velocity.y < fallThreshold;
+
+        Vector3 horizontalVelocity = velocity;
+        horizontalVelocity.y = 0f;
+
+        bool isMovingHorizontally = horizontalVelocity.magnitude > moveThreshold;
+        bool shouldPlaySlide = (isMovingHorizontally || forceSlidingSound) && !isFalling;
+
+        if (shouldPlaySlide)
         {
-            if (!audioSource.isPlaying)
-            {
-                audioSource.Play();
-            }
+            if (!slideSource.isPlaying)
+                slideSource.Play();
         }
         else
         {
-            if (audioSource.isPlaying)
+            if (slideSource.isPlaying)
+                slideSource.Stop();
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (impactSource == null || landClip == null)
+            return;
+
+        foreach (ContactPoint contact in collision.contacts)
+        {
+            if (contact.normal.y > 0.5f)
             {
-                audioSource.Stop();
+                float impactSpeed = collision.relativeVelocity.magnitude;
+
+                if (impactSpeed >= minImpactSpeed)
+                {
+                    float volume = Mathf.Clamp(impactSpeed * landVolumeMultiplier, 0.2f, 1f);
+                    impactSource.PlayOneShot(landClip, volume);
+                }
+
+                break;
             }
         }
+    }
 
-        lastPosition = transform.position;
+    public void SetSlidingSoundActive(bool active)
+    {
+        forceSlidingSound = active;
     }
 }

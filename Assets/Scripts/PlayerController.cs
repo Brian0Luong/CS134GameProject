@@ -279,6 +279,8 @@ public class PlayerController : MonoBehaviour
 
         Vector3 moveDirection = (camForward * moveInput + camRight * turnInput).normalized;
 
+        CubeSlideSound slideSound = currentPushable.GetComponent<CubeSlideSound>();
+
         if (moveDirection.sqrMagnitude > 0.01f)
         {
             Vector3 move = moveDirection * pushMoveSpeed * Time.deltaTime;
@@ -287,10 +289,16 @@ public class PlayerController : MonoBehaviour
             controller.Move(move);
 
             animator.SetFloat(animPushSpeed, 1f);
+
+            if (slideSound != null)
+                slideSound.SetSlidingSoundActive(true);
         }
         else
         {
             animator.SetFloat(animPushSpeed, 0f);
+
+            if (slideSound != null)
+                slideSound.SetSlidingSoundActive(false);
         }
 
         float verticalMove = VerticalForceCalculation();
@@ -358,6 +366,12 @@ public class PlayerController : MonoBehaviour
     {
         if (currentPushable != null)
         {
+            CubeSlideSound slideSound = currentPushable.GetComponent<CubeSlideSound>();
+            if (slideSound != null)
+            {
+                slideSound.SetSlidingSoundActive(false);
+            }
+
             PushableObject pushable = currentPushable.GetComponent<PushableObject>();
             if (pushable != null)
             {
