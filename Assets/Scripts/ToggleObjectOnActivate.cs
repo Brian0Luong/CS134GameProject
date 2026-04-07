@@ -3,13 +3,25 @@ using UnityEngine;
 public class ToggleObjectOnActivate : MonoBehaviour, IButtonActivated
 {
     [SerializeField] private GameObject targetObject;
-    [SerializeField] private bool setActiveOnActivate = true;
     [SerializeField] private bool destroyObject = false;
+
+    [Header("Sound")]
+    [SerializeField] private AudioClip activateSound;
+    [SerializeField] private float volume = 1f;
 
     public void Activate()
     {
         if (targetObject == null)
             return;
+
+        if (activateSound != null)
+        {
+            AudioSource.PlayClipAtPoint(
+                activateSound,
+                targetObject.transform.position,
+                volume
+            );
+        }
 
         if (destroyObject)
         {
@@ -17,7 +29,7 @@ public class ToggleObjectOnActivate : MonoBehaviour, IButtonActivated
         }
         else
         {
-            targetObject.SetActive(setActiveOnActivate);
+            targetObject.SetActive(!targetObject.activeSelf);
         }
     }
 
@@ -25,6 +37,15 @@ public class ToggleObjectOnActivate : MonoBehaviour, IButtonActivated
     {
         if (targetObject == null)
             return;
+
+        if (activateSound != null)
+        {
+            AudioSource.PlayClipAtPoint(
+                activateSound,
+                targetObject.transform.position,
+                volume
+            );
+        }
 
         targetObject.SetActive(state);
     }
