@@ -4,7 +4,10 @@ using UnityEngine;
 public class DoorOpen : MonoBehaviour
 {
     public Vector3 openOffset = new Vector3(0, 3f, 0);
-    public float speed = 2f;
+
+    [Header("Movement Speeds")]
+    public float openSpeed = 2f;
+    public float closeSpeed = 2f;
 
     [Header("Sound")]
     public AudioClip openSound;
@@ -15,7 +18,6 @@ public class DoorOpen : MonoBehaviour
     private Vector3 openPosition;
     private bool shouldOpen = false;
 
-    private bool wasOpen = false;
     private AudioSource audioSource;
 
     void Start()
@@ -31,13 +33,23 @@ public class DoorOpen : MonoBehaviour
 
     void Update()
     {
+        float speed = shouldOpen ? openSpeed : closeSpeed;
+
         if (shouldOpen)
         {
-            transform.position = Vector3.Lerp(transform.position, openPosition, Time.deltaTime * speed);
+            transform.position = Vector3.Lerp(
+                transform.position,
+                openPosition,
+                Time.deltaTime * speed
+            );
         }
         else
         {
-            transform.position = Vector3.Lerp(transform.position, closedPosition, Time.deltaTime * speed);
+            transform.position = Vector3.Lerp(
+                transform.position,
+                closedPosition,
+                Time.deltaTime * speed
+            );
         }
     }
 

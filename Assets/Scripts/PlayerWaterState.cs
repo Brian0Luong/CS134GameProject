@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Rendering;
+using Cinemachine;
 
 public class PlayerWaterState : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class PlayerWaterState : MonoBehaviour
     public WaterRiser currentWater;
     public Slider oxygenBar;
     public Volume underwaterVolume;
+    public GameObject loseScreen;
+    public PlayerController playerController;
+    public CinemachineFreeLook freeLookCamera;
 
     [Header("Audio References")]
     public AudioSource underwaterLoopSource;
@@ -178,9 +182,19 @@ public class PlayerWaterState : MonoBehaviour
         hasLost = true;
         Debug.Log("Out of oxygen - player loses");
 
-        if (reloadSceneOnLose)
+        if (loseScreen != null)
+            loseScreen.SetActive(true);
+
+        if (playerController != null)
+            playerController.enabled = false;
+
+        if (freeLookCamera != null)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            freeLookCamera.m_XAxis.m_InputAxisName = "";
+            freeLookCamera.m_YAxis.m_InputAxisName = "";
         }
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }
