@@ -1,6 +1,8 @@
 # DeepLock
 DeepLock is a single-player 3D puzzle platformer developed on the Unity Engine.
 The player must move through the rooms while solving puzzles in order to make it to the exit. As the player tries to escape, water will begin to fill up the room. If the player is unable to escape in time, their oxygen will deplete, resulting in them drowning.
+# Demo Video
+[Demo](https://www.youtube.com/watch?v=NsN9UgPobYw)
 # Assets Used
 [LowPoly SciFi Pack](https://assetstore.unity.com/packages/3d/environments/sci-fi/free-lowpoly-scifi-110070)
 
