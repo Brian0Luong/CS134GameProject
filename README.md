@@ -55,6 +55,31 @@ If the player fails to escape in time, their oxygen depletes, resulting in drown
 
 ---
 
+## How to Run the Game
+
+### Run in Unity
+1. Open the project in Unity Hub  
+2. Navigate to:  
+   `Assets/Scenes/`  
+3. Open the **MainMenu** scene  
+4. Click the **Play** button in Unity  
+
+---
+
+### Build & Run (Optional)
+1. Go to **File → Build Settings**  
+2. Add scenes in this order:
+   - MainMenu  
+   - EscapeRoom_01  
+3. Click **Build and Run**  
+
+---
+
+## Scene Structure
+- **MainMenu** → Starting menu of the game  
+- **EscapeRoom_01** → Main gameplay level  
+- **SampleScene** → Testing / development scene  
+
 ## Challenges & Solutions
 **Challenge:** Managing timing between water rising and player survival  
 **Solution:** Implemented synchronized update logic to ensure consistent gameplay  
